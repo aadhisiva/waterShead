@@ -4,10 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
 } from "typeorm";
-import { Sectors } from "./sectors";
-
 
 @Entity()
 export class Activity {
@@ -36,8 +33,11 @@ export class Activity {
   @Column({ default: "" })
   SubActivityCode: string;
 
+  @Column({ default: "" })
+  FormateType: string;
+
   @Column({ default: "", type: 'text' })
-  TypeOfRefractionist: string;
+  TypeOfPerson: string;
 
   @Column({ default: "", type: 'text' })
   TypeOfWork: string;

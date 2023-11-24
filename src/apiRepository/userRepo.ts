@@ -1,7 +1,6 @@
 import { Service } from 'typedi';
 import { AppDataSource } from '../db/config';
-import { loginData } from '../entities';
-import { generateRandomString } from '../utils/resuableCode';
+import { loginData, versions } from '../entities';
 
 @Service()
 export class UserRepo {
@@ -9,6 +8,10 @@ export class UserRepo {
     async saveLogin(data: loginData) {
         let loginDb = await AppDataSource.getRepository(loginData);
         return await loginDb.save(data);
+    };
+
+    async getVersionOfApp() {
+        return await AppDataSource.getRepository(versions).find();
     };
 
     async sendOtp(data: loginData) {

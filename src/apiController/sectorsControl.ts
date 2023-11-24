@@ -82,21 +82,22 @@ sectorRouter.post('/subActivity', async (req, res) => {
         return apiResponse(res, error);
     }
 });
-sectorRouter.post('/random', async (req, res) => {
+
+sectorRouter.post('/questions', async (req, res) => {
     try {
-        let newArray = [];
-        for(let i=1; i < 15000; i++){
-            if(i < 10){
-                newArray.push(String(new Date().getTime()).slice(0,9)+i) 
-            } else if(i > 10 && i < 100){
-                newArray.push(String(new Date().getTime()).slice(0,8)+i) 
-            } else if(i > 100 && i < 1000){
-                newArray.push(String(new Date().getTime()).slice(0,7)+i) 
-            } else if(i > 1000 && i < 15000){
-                newArray.push(String(new Date().getTime()).slice(0,5)+(i)) 
-            } 
-        }
-        return apiResponse(res, newArray);
+        let body = req.body;
+        let result = await sectorServices.saveQuestions(body);
+         return apiResponse(res, result);
+    } catch (error) {
+        return apiResponse(res, error);
+    }
+});
+
+sectorRouter.post('/getQuestions', async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await sectorServices.getQuestions(body);
+         return apiResponse(res, result);
     } catch (error) {
         return apiResponse(res, error);
     }

@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { AppDataSource } from '../db/config';
-import { Activity, Category, Schemes, Sectors, SubActivity, SubSchemes } from '../entities';
+import { Activity, Category, Schemes, Sectors, SubActivity, SubSchemes, formats } from '../entities';
 import { YES } from '../utils/constants';
 import { Equal } from 'typeorm';
 
@@ -8,9 +8,12 @@ import { Equal } from 'typeorm';
 export class SectorRepo {
 
     async getSchemes(data) {
-        const { UserRole } = data;
-        if(!UserRole) return { code: 400 };
-        let schemesJson = await AppDataSource.getRepository(Schemes).find();
+        const { UserId } = data;
+        console.log("SAdas", UserId)
+        if (!UserId) return { code: 400 };
+        // let schemesJson = await AppDataSource.getRepository(Schemes).find();
+        let schemesJson = await AppDataSource.getRepository(Schemes).createQueryBuilder('scheme').
+            select(['scheme.SchemeName as SchemeName, scheme.SchemeCode as SchemeCode']).getRawMany()
         let promiseRes = await new Promise(async (resolve, reject) => {
             let newArray = [];
             const schemesLength = schemesJson.length;
@@ -19,7 +22,11 @@ export class SectorRepo {
                 eachScheme['SectorsJson'] = [];
                 let newObj = {
                     ...eachScheme,
-                    SectorsJson: await AppDataSource.getRepository(Sectors).find({ where: { SchemeCode: Equal(eachScheme.SchemeCode), UserRole: Equal(UserRole) } })
+                    SectorsJson: await AppDataSource.getRepository(Sectors).createQueryBuilder('sector').
+                        select([`sector.SectorName as SectorName,sector.IsSubScheme as IsSubScheme, sector.IsCategory as IsCategory,
+                    sector.IsActivity as IsActivity,sector.IsSubActivity as IsSubActivity,sector.ActivityCode as ActivityCode,
+                    sector.SubSchemeCode as SubSchemeCode,sector.SubActivityCode as SubActivityCode,sector.CategoryCode as CategoryCode`])
+                        .where("sector.SchemeCode =:code and sector.UserId = :userId", { code: eachScheme.SchemeCode, userId: UserId }).getRawMany()
                 }
                 newArray.push(newObj);
             };
@@ -33,14 +40,18 @@ export class SectorRepo {
         return await new Promise(async (resolve, reject) => {
             if (ActivityCode) {
                 let newArray = [];
-                let schemesJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: ActivityCode } });
+                let schemesJson = await AppDataSource.getRepository(Activity).createQueryBuilder('Activity').
+                    select([`Activity.ActivityName as ActivityName, Activity.CategoryCode as CategoryCode, Activity.SectorCode as SectorCode,
+                Activity.SubSchemeCode as SubSchemeCode,Activity.IsSubActivity as IsSubActivity,Activity.ActivityCode as ActivityCode,
+                Activity.FormateType as FormateType,Activity.SubActivityCode as SubActivityCode,Activity.TypeOfPerson as TypeOfPerson, Activity.TypeOfWork as TypeOfWork`])
+                    .where("Activity.ActivityCode =:ActivityCode", { ActivityCode: ActivityCode }).getRawMany()
                 let schemesLength = schemesJson.length;
                 for (let i = 0; i < schemesLength; i++) {
                     schemesJson[i]['SubActivityJson'] = [];
                     if (schemesJson[i].IsSubActivity == YES) {
                         let newObj = {
                             ...schemesJson[i],
-                            SubActivityJson: await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: schemesJson[i].SubActivityCode } })
+                            SubActivityJson: await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: schemesJson[i].SubActivityCode } })
                         }
                         newArray.push(newObj);
                     }
@@ -61,7 +72,10 @@ export class SectorRepo {
                     }
                     // catergory process
                     if (eachObj.IsCategory == YES) {
-                        let categoryJson = await AppDataSource.getRepository(Category).find({ where: { CategoryCode: eachObj.CategoryCode } });
+                        // let categoryJson = await AppDataSource.getRepository(Category).find({ where: { CategoryCode: eachObj.CategoryCode } });
+                        let categoryJson = await AppDataSource.getRepository(Category).createQueryBuilder('Category').
+                            select([`Category.CategoryName as CategoryName,Category.CategoryCode as CategoryCode,Category.SectorCode as SectorCode,Category.IsActivity as IsActivity,Category.IsSubActivity as IsSubActivity,Category.ActivityCode as ActivityCode,Category.SubActivityCode as SubActivityCode`])
+                            .where("Category.CategoryCode =:CategoryCode", { CategoryCode: eachObj.CategoryCode }).getRawMany()
                         let categoriesLength = categoryJson.length;
                         for (let j = 0; j < categoriesLength; j++) {
                             let eachCategory = categoryJson[j];
@@ -72,14 +86,24 @@ export class SectorRepo {
                             }
                             // activity process
                             if (eachObj.IsActivity == YES) {
-                                let activityJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: eachCategory.ActivityCode } });
+                                // let activityJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: eachCategory.ActivityCode } });
+                                let activityJson = await AppDataSource.getRepository(Activity).createQueryBuilder('Activity').
+                                    select([`Activity.ActivityName as ActivityName, Activity.CategoryCode as CategoryCode, Activity.SectorCode as SectorCode,
+                                Activity.SubSchemeCode as SubSchemeCode,Activity.IsSubActivity as IsSubActivity,Activity.ActivityCode as ActivityCode,
+                                Activity.FormateType as FormateType,Activity.SubActivityCode as SubActivityCode,Activity.TypeOfPerson as TypeOfPerson, Activity.TypeOfWork as TypeOfWork`])
+                                    .where("Activity.ActivityCode =:ActivityCode", { ActivityCode: eachCategory.ActivityCode }).getRawMany()
                                 let activityLength = activityJson.length;
                                 for (let k = 0; k < activityLength; k++) {
                                     let eachActivity = activityJson[k];
                                     if (eachActivity.IsSubActivity == YES) {
                                         let newActivityObj = {
                                             ...eachActivity,
-                                            SubActivityJson: await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachActivity.SubActivityCode } })
+                                            // SubActivityJson: await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachActivity.SubActivityCode } })
+                                            SubActivityJson: await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                                                select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                                        SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                                        SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                                                .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: eachActivity.SubActivityCode }).getRawMany()
                                         }
                                         newCategory.activityJson.push(newActivityObj);
                                     } else {
@@ -87,13 +111,23 @@ export class SectorRepo {
                                     }
                                 }
                             } else if (eachObj.IsSubActivity == YES) {
-                                let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachObj.SubActivityCode } });
+                                // let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachObj.SubActivityCode } });
+                                let SubActivityJson = await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                                    select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                        SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                        SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                                    .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: eachObj.SubActivityCode }).getRawMany()
                                 newSubScheme['subActivityJson'].push(SubActivityJson);
                             }
                         }
                         newArray.push(newSubScheme)
                     } else if (eachObj.IsActivity == YES) {
-                        let activityJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: eachObj.ActivityCode } });
+                        // let activityJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: eachObj.ActivityCode } });
+                        let activityJson = await AppDataSource.getRepository(Activity).createQueryBuilder('Activity').
+                            select([`Activity.ActivityName as ActivityName, Activity.CategoryCode as CategoryCode, Activity.SectorCode as SectorCode,
+                                Activity.SubSchemeCode as SubSchemeCode,Activity.IsSubActivity as IsSubActivity,Activity.ActivityCode as ActivityCode,
+                                Activity.FormateType as FormateType,Activity.SubActivityCode as SubActivityCode,Activity.TypeOfPerson as TypeOfPerson, Activity.TypeOfWork as TypeOfWork`])
+                            .where("Activity.ActivityCode =:ActivityCode", { ActivityCode: eachObj.ActivityCode }).getRawMany()
                         let activityLength = activityJson.length;
                         for (let k = 0; k < activityLength; k++) {
                             let eachActivity = activityJson[k];
@@ -101,7 +135,12 @@ export class SectorRepo {
                             if (eachActivity.IsSubActivity == YES) {
                                 let newActivityObj = {
                                     ...eachActivity,
-                                    SubActivityJson: await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachActivity.SubActivityCode } })
+                                    SubActivityJson: await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                                        select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                                    SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                                    SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                                        .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: eachActivity.SubActivityCode }).getRawMany()
+
                                 }
                                 newArray['activityJson'].push(newActivityObj);
                             } else {
@@ -109,7 +148,12 @@ export class SectorRepo {
                             }
                         }
                     } else if (eachObj.IsSubActivity == YES) {
-                        let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachObj.SubActivityCode } });
+                        // let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachObj.SubActivityCode } });
+                        let SubActivityJson = await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                            select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                        SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                        SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                            .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: eachObj.SubActivityCode }).getRawMany()
                         newArray['categoryJson'].push([]);
                         newArray['activityJson'].push([]);
                         newArray['subActivityJson'].push(SubActivityJson);
@@ -118,7 +162,10 @@ export class SectorRepo {
                 resolve(newArray);
             } else if (CategoryCode) {
                 let newArray = [];
-                let categoryJson = await AppDataSource.getRepository(Category).find({ where: { CategoryCode: CategoryCode } });
+                // let categoryJson = await AppDataSource.getRepository(Category).find({ where: { CategoryCode: CategoryCode } });
+                let categoryJson = await AppDataSource.getRepository(Category).createQueryBuilder('Category').
+                    select([`Category.CategoryName as CategoryName,Category.CategoryCode as CategoryCode,Category.SectorCode as SectorCode,Category.IsActivity as IsActivity,Category.IsSubActivity as IsSubActivity,Category.ActivityCode as ActivityCode,Category.SubActivityCode as SubActivityCode`])
+                    .where("Category.CategoryCode =:CategoryCode", { CategoryCode: CategoryCode }).getRawMany()
                 let categoriesLength = categoryJson.length;
                 for (let j = 0; j < categoriesLength; j++) {
                     let eachCategory = categoryJson[j];
@@ -130,14 +177,24 @@ export class SectorRepo {
                     };
                     // activity process
                     if (eachCategory.IsActivity == YES) {
-                        let activityJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: eachCategory.ActivityCode } });
+                        // let activityJson = await AppDataSource.getRepository(Activity).find({ where: { ActivityCode: eachCategory.ActivityCode } });
+                        let activityJson = await AppDataSource.getRepository(Activity).createQueryBuilder('Activity').
+                            select([`Activity.ActivityName as ActivityName, Activity.CategoryCode as CategoryCode, Activity.SectorCode as SectorCode,
+                        Activity.SubSchemeCode as SubSchemeCode,Activity.IsSubActivity as IsSubActivity,Activity.ActivityCode as ActivityCode,
+                        Activity.FormateType as FormateType,Activity.SubActivityCode as SubActivityCode,Activity.TypeOfPerson as TypeOfPerson, Activity.TypeOfWork as TypeOfWork`])
+                            .where("Activity.ActivityCode =:ActivityCode", { ActivityCode: eachCategory.ActivityCode }).getRawMany()
                         let activityLength = activityJson.length;
                         for (let k = 0; k < activityLength; k++) {
                             let eachActivity = activityJson[k];
                             if (eachActivity.IsSubActivity == YES) {
                                 let newActivityObj = {
                                     ...eachActivity,
-                                    SubActivityJson: await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachActivity.SubActivityCode } })
+                                    // SubActivityJson: await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachActivity.SubActivityCode } })
+                                    SubActivityJson: await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                                        select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                                    SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                                    SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                                        .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: eachActivity.SubActivityCode }).getRawMany()
                                 }
                                 newCategory.activityJson.push(newActivityObj);
                             } else {
@@ -146,7 +203,12 @@ export class SectorRepo {
                         };
                         newArray.push(newCategory);
                     } else if (eachCategory.IsSubActivity == YES) {
-                        let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachCategory.SubActivityCode } });
+                        // let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: eachCategory.SubActivityCode } });
+                        let SubActivityJson = await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                            select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                        SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                        SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                            .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: eachCategory.SubActivityCode }).getRawMany()
                         newCategory['subActivityJson'].push(SubActivityJson);
                     }
                 }
@@ -156,7 +218,12 @@ export class SectorRepo {
                 newArray['categoryJson'].push([]);
                 newArray['subSchemeJson'].push([]);
                 newArray['activityJson'].push([]);
-                let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: SubActivityCode } });
+                // let SubActivityJson = await AppDataSource.getRepository(SubActivity).find({ where: { SubActivityCode: SubActivityCode } });
+                let SubActivityJson = await AppDataSource.getRepository(SubActivity).createQueryBuilder('SubActivity').
+                    select([`SubActivity.SubActivityName as SubActivityName, SubActivity.CategoryCode as CategoryCode, SubActivity.SectorCode as SectorCode,
+                        SubActivity.SubSchemeCode as SubSchemeCode,SubActivity.ActivityCode as ActivityCode,
+                        SubActivity.FormateType as FormateType,SubActivity.SubActivityCode as SubActivityCode,SubActivity.TypeOfPerson as TypeOfPerson, SubActivity.TypeOfWork as TypeOfWork`])
+                    .where("SubActivity.SubActivityCode =:SubActivityCode", { SubActivityCode: SubActivityCode }).getRawMany()
                 newArray['subActivityJson'].push(SubActivityJson);
                 resolve(newArray);
             }
@@ -199,5 +266,15 @@ export class SectorRepo {
         data.TypeOfRefractionist = JSON.stringify(data.TypeOfRefractionist);
         data.TypeOfWork = JSON.stringify(data.TypeOfWork)
         return await AppDataSource.getRepository(SubActivity).save(data);
+    }
+    async saveQuestions(data: formats) {
+        data.QuestionValues = JSON.stringify(data.QuestionValues);
+        return await AppDataSource.getRepository(formats).save(data);
+    }
+    async getQuestions(data: formats) {
+        const { formateType, TypeOfPerson } = data;
+        if (!formateType || !TypeOfPerson) return { code: 400 };
+        // data.QuestionValues = JSON.stringify(data.QuestionValues);
+        return await AppDataSource.getRepository(formats).findBy({ formateType, TypeOfPerson });
     }
 }

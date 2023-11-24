@@ -26,4 +26,10 @@ export class SectorServices {
     async saveSubActivity(data){
         return this.sectorRepo.saveSubActivity(data);
     }
+    async saveQuestions(data){
+        return this.sectorRepo.saveQuestions(data);
+    }
+    async getQuestions(data){
+        return this.sectorRepo.getQuestions(data);
+    }
 }

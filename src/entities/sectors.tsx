@@ -43,7 +43,7 @@ export class Sectors {
   CategoryCode: string;
 
   @Column({ default: ""})
-  UserRole: string;
+  UserId: string;
 
   @CreateDateColumn()
   createdDate: Date;

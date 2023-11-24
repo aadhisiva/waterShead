@@ -15,7 +15,7 @@ import { AppDataSource } from './db/config';
 import Logger from './loggers/winstonLogger';
 
 //controllers
-import {sectorRouter} from "./apiController";
+import {adminRouter, sectorRouter} from "./apiController";
 import { userRouter } from './apiController/userControl';
 
 // for acceessing env variables
@@ -64,11 +64,11 @@ app.get("/run", (req, res) => {
 // controllers
 app.use('/sector', sectorRouter);
 app.use('/login', userRouter);
-
-
+app.use('/admin', adminRouter);
 
 // we are adding port connection here
-// app.listen(port, '192.168.214.170', async () => {
+// app.listen(port, '192.168.59.170', async () => {
+// app.listen(port, '10.96.112.198', async () => {
 app.listen(port, async () => {
   let connection = await AppDataSource.initialize();
   if (connection instanceof Error) {

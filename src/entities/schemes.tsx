@@ -3,12 +3,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  JoinTable,
-  JoinColumn,
+  UpdateDateColumn
 } from "typeorm";
-import { Sectors } from "./sectors";
 
 @Entity()
 export class Schemes {
@@ -20,29 +16,10 @@ export class Schemes {
 
   @Column({ default: ""})
   SchemeCode: string;
-  
-  @Column({ default: ""})
-  IsSubScheme: string;
-  
-  @Column({ default: ""})
-  IsSector: string;
-
-  @Column({ default: ""})
-  IsCategory: string;
-
-  @Column({ default: ""})
-  IsActivity: string;
-
-  @Column({ default: ""})
-  IsSubActivity: string;
 
   @CreateDateColumn()
   createdDate: Date;
 
   @UpdateDateColumn()
   updatedDate: Date;
-
-  // @OneToMany(() => Sectors, (sector) => sector.SchemeCode)
-  // @JoinColumn()
-  // sectors: Sectors[]
 }

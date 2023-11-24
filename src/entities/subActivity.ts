@@ -33,8 +33,11 @@ export class SubActivity {
   @Column({ default: ""})
   SubActivityCode: string;
 
+  @Column({ default: "" })
+  FormateType: string;
+
   @Column({ default: "", type: 'text' })
-  TypeOfRefractionist: string;
+  TypeOfPerson: string;
 
   @Column({ default: "", type: 'text' })
   TypeOfWork: string;
