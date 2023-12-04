@@ -44,4 +44,8 @@ export class UserServices {
         if (loginUser?.Otp !== Otp) return { code: 422, message: RESPONSEMSG.VALIDATE_FAILED }
         return { message: RESPONSEMSG.VALIDATE, data: {} };
     };
+
+    async locations(data) {
+        return await this.userRepo.locations(data);
+    };
 }

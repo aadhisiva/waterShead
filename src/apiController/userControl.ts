@@ -38,6 +38,17 @@ userRouter.post('/verifyOtp', authTokenAndVersion, async (req, res) => {
     }
 });
 
+userRouter.post('/locations', authTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await userServices.locations(body);
+        return apiResponse(res, result);
+        // return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
+    } catch (error) {
+        return apiResponse(res, error);
+    }
+});
+
 export {
     userRouter
 };

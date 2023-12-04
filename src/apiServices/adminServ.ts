@@ -17,10 +17,19 @@ export class AdminServices {
     async addUser(data) {
         const { Mobile, UserRole } = data;
         if (!Mobile || !UserRole) return { code: 400 };
-        let checkMobile = await this.adminRepo.checkWithMobile(Mobile);
-        if(checkMobile) return {code: 422, message: "Already Registered"}
+        // let checkMobile = await this.adminRepo.checkWithMobile(Mobile);
+        // if(checkMobile) return {code: 422, message: "Already Registered"}
         data.UserId = 'WS' + generateUniqueId();
         return this.adminRepo.addUser(data);
+    };
+
+    async addSuperAdmin(data) {
+        const { Mobile, UserRole } = data;
+        if (!Mobile || !UserRole) return { code: 400 };
+        // let checkMobile = await this.adminRepo.checkWithMobile(Mobile);
+        // if(checkMobile) return {code: 422, message: "Already Registered"}
+        data.UserId = 'WS' + generateUniqueId();
+        return this.adminRepo.addSuperAdmin(data);
     };
 
     async allUsersData(data) {
@@ -44,7 +53,7 @@ export class AdminServices {
         if (!savedRes?.code) {
             let sendSingleSms = await this.otpServices.sendOtpAsSingleSms(Mobile, data?.WebOtp);
             if (sendSingleSms !== 200) return { code: 422, message: RESPONSEMSG.OTP_FAILED };
-            return { message: RESPONSEMSG.OTP, data: { Token: savedRes?.WebToken, UserId: savedRes?.UserId, Version: savedRes?.WebVersion } };
+            return { message: RESPONSEMSG.OTP, data: { Token: savedRes?.WebToken, UserId: savedRes?.UserId, Version: savedRes?.WebVersion, UserRole: savedRes?.UserRole } };
         };
         return savedRes;
     };
@@ -55,5 +64,33 @@ export class AdminServices {
         let loginUser: ObjectParam = await this.adminRepo.fetchUser(data);
         if (loginUser?.WebOtp !== Otp) return { code: 422, message: RESPONSEMSG.VALIDATE_FAILED }
         return { message: RESPONSEMSG.VALIDATE, data: {} };
+    };
+
+    async getSchemes(data) {
+        return await this.adminRepo.getSchemes(data);
+    };
+
+    async allDistricts(data) {
+        return await this.adminRepo.allDistricts(data);
+    };
+
+    async districtWiseTaluk(data) {
+        return await this.adminRepo.districtWiseTaluk(data);
+    };
+
+    async talukWiseHobli(data) {
+        return await this.adminRepo.talukWiseHobli(data);
+    };
+
+    async subWaterSheadInHobli(data) {
+        return await this.adminRepo.subWaterSheadInHobli(data);
+    };
+
+    async microWaterShedInSubWaterShed(data) {
+        return await this.adminRepo.microWaterShedInSubWaterShed(data);
+    };
+
+    async locations(data) {
+        return await this.adminRepo.locations(data);
     };
 }

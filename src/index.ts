@@ -68,8 +68,8 @@ app.use('/admin', adminRouter);
 
 // we are adding port connection here
 // app.listen(port, '192.168.59.170', async () => {
-// app.listen(port, '10.96.112.198', async () => {
-app.listen(port, async () => {
+app.listen(port, '192.168.45.170', async () => {
+// app.listen(port, async () => {
   let connection = await AppDataSource.initialize();
   if (connection instanceof Error) {
     Logger.error("connection error :::::::", connection);

@@ -1,3 +1,6 @@
+import { AppDataSource } from "../db/config";
+import { webLogs } from "../entities";
+
 // generate random string
 export const generateRandomString = (RequiredLength) => {
   let newString = '';
@@ -27,13 +30,29 @@ export function generateEOfTTime() {
   // end.setHours(23, 59, 59, 999);
   return end.toLocaleDateString();
 };
+
 export function generateCurrentTime() {
   // generate time 
   const current = new Date();
   return current.toLocaleDateString();
 };
+
 export function generateUniqueId() {
   // generate time 
   const [year, month, day] = new Date().toJSON().split('T')[0].split('-');
   return year + month + day + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + new Date().getMilliseconds();
+};
+
+export const saveWebLogs = async (WebPage, Message, UserId, Request, Response, Role , ResponseType) =>  {
+  // generate time
+let newBody = {
+  WebPage,
+  Message,
+  UserId,
+  Role,
+  Request: JSON.stringify(Request),
+  Response: JSON.stringify(Response),
+  ResponseType
+}
+  return await AppDataSource.getRepository(webLogs).save(newBody);
 };

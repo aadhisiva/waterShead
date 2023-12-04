@@ -55,6 +55,15 @@ import {
     HobliCode: string;
 
     @Column({ default: '' })
+    DistrictName: string;
+
+    @Column({ default: '' })
+    TalukName: string;
+
+    @Column({ default: '' })
+    HobliName: string;
+
+    @Column({ default: '' })
     Status: string;
 
     @Column({ default: '' })

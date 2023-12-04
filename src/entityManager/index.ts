@@ -1,4 +1,4 @@
-import { Activity, Category, Schemes, Sectors, SubActivity, SubSchemes, loginData } from "../entities"
+import { Activity, Category, Schemes, Sectors, SubActivity, SubSchemes, loginData, masterData, mobileLogs, superAdmin, webLogs } from "../entities"
 import { formats } from "../entities/formats"
 import { versions } from "../entities/versions"
 
@@ -13,6 +13,10 @@ export const entities = () => {
         SubSchemes,
         loginData,
         formats,
-        versions
+        versions,
+        masterData,
+        webLogs,
+        mobileLogs,
+        superAdmin
     ]
 }

@@ -9,7 +9,6 @@ export class SectorRepo {
 
     async getSchemes(data) {
         const { UserId } = data;
-        console.log("SAdas", UserId)
         if (!UserId) return { code: 400 };
         // let schemesJson = await AppDataSource.getRepository(Schemes).find();
         let schemesJson = await AppDataSource.getRepository(Schemes).createQueryBuilder('scheme').
