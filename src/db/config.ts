@@ -15,7 +15,6 @@ dotenv.config();
 
 export const AppDataSource= new DataSource({
   type: "mssql",
-  // host: "LAPTOP-D97QEO1R",
   host: String(process.env.PRO_DB_HOST),
   port: Number(process.env.PRO_DB_PORT),
   username: process.env.PRO_DB_USERNAME,
@@ -25,14 +24,8 @@ export const AppDataSource= new DataSource({
   logging: false,
   synchronize: true,
   options: {
-      encrypt: false,
-      useUTC: true,
-  },
-  pool: {
-      max: 100,
-      min: 0,
-      idleTimeoutMillis: 3600000,
-  },
+      encrypt: false
+  }
 });
 
 

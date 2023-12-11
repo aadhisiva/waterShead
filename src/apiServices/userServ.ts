@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { UserRepo } from "../apiRepository/userRepo";
-import { generateEOfTTime, generateOTP, generateRandomString, generateUniqueId } from "../utils/resuableCode";
+import { generateEOfTTime, generateOTP, generateRandomString, generateUniqueId, saveMobileLogs, saveMobileOtps } from "../utils/resuableCode";
 import { RESPONSEMSG } from "../utils/statusCodes";
 import { OtpServices } from "../sms/smsServceResusable";
 import { loginData } from "../entities";
@@ -31,8 +31,11 @@ export class UserServices {
         let savedRes: ObjectParam = await this.userRepo.sendOtp(data);
         if (!savedRes?.code) {
             let sendSingleSms = await this.otpServices.sendOtpAsSingleSms(Mobile, data?.Otp);
-            if (sendSingleSms !== 200) return { code: 422, message: RESPONSEMSG.OTP_FAILED };
-            return { message: RESPONSEMSG.OTP, data: { Token: savedRes?.Token, UserId: savedRes?.UserId } };
+            await saveMobileOtps(Mobile, sendSingleSms?.otpMessage, sendSingleSms?.response, data?.UserId ,data?.Otp);
+            if (sendSingleSms?.code !== 200){
+                return { code: 422, message: RESPONSEMSG.OTP_FAILED };
+            } 
+            return { message: RESPONSEMSG.OTP, data: { Token: savedRes?.Token, UserId: savedRes?.UserId,  Version: savedRes?.Version, UserRole: savedRes?.UserRole } };
         };
         return savedRes;
     };

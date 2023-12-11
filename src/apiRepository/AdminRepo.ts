@@ -1,14 +1,16 @@
 import { Service } from 'typedi';
 import { AppDataSource } from '../db/config';
-import { Schemes, loginData, masterData, superAdmin, versions } from '../entities';
+import { Activity, Schemes, Sectors, loginData, masterData, superAdmin, Versions } from '../entities';
 import { SUPER_ADMIN } from '../utils/constants';
 
 
 let superAdminRepo = AppDataSource.getRepository(superAdmin);
 let loginDataRepo = AppDataSource.getRepository(loginData);
 let schemesRepo = AppDataSource.getRepository(Schemes);
-let versionRepo = AppDataSource.getRepository(versions);
+let versionRepo = AppDataSource.getRepository(Versions);
 let mastersRepo = AppDataSource.getRepository(masterData);
+let sectorsRepo = AppDataSource.getRepository(Sectors);
+let activityRepo = AppDataSource.getRepository(Activity);
 
 @Service()
 export class AdminRepo {
@@ -121,6 +123,28 @@ export class AdminRepo {
         if (!data?.code) return { code: 400 };
         let findData = await mastersRepo.createQueryBuilder('master').select(['DISTINCT master.MicroWatershedCode as value', 'master.MicroWatershedName as name'])
             .where("master.SubWatershedCode = :dCode", { dCode: data?.code })
+            .orderBy('master.MicroWatershedCode', 'ASC').getRawMany();
+        return findData;
+    };
+
+    async schemeSelect(data) {
+        let findData = await schemesRepo.createQueryBuilder('master').select(['DISTINCT master.SchemeCode as value', 'master.SchemeName as name'])
+            .orderBy('master.SchemeName', 'ASC').getRawMany();
+        return findData;
+    };
+
+    async sectorInSchemes(data) {
+        if (!data?.code) return { code: 400 };
+        let findData = await sectorsRepo.createQueryBuilder('master').select(['DISTINCT master.ActivityCode as value', 'master.SectorName as name'])
+            .where("master.SchemeCode = :dCode", { dCode: data?.code })
+            .orderBy('master.SectorName', 'ASC').getRawMany();
+        return findData;
+    };
+
+    async activityInSector(data) {
+        if (!data?.code) return { code: 400 };
+        let findData = await activityRepo.createQueryBuilder('master').select(['DISTINCT master.ActivityCode as value', 'master.ActivityName as name'])
+            .where("master.ActivityCode = :dCode", { dCode: data?.code })
             .orderBy('master.MicroWatershedCode', 'ASC').getRawMany();
         return findData;
     };

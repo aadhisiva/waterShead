@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { AppDataSource } from '../db/config';
-import { loginData, masterData, versions } from '../entities';
+import { loginData, masterData, Versions } from '../entities';
 
 
 const loginDataRepo = AppDataSource.getRepository(loginData);
@@ -14,7 +14,7 @@ export class UserRepo {
     };
 
     async getVersionOfApp() {
-        return await AppDataSource.getRepository(versions).find();
+        return await AppDataSource.getRepository(Versions).find();
     };
 
     async sendOtp(data: loginData) {

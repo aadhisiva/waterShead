@@ -1,8 +1,10 @@
 import { Container, Service } from 'typedi';
 import express from "express";
-import { apiResponse } from '../utils/errorHandling';
+import { mobileAppResponse } from '../utils/errorHandling';
 import { UserServices } from '../apiServices/userServ';
 import { authTokenAndVersion, authVersion } from '../utils/middlewares';
+import { MOBILE_MESSAGES } from '../utils/constants';
+import { getRoleAndUserId } from '../utils/resuableCode';
 
 const userRouter = express.Router()
 
@@ -12,9 +14,9 @@ userRouter.post('/saveLogin', async (req, res) => {
     try {
         let body = req.body;
         let result = await userServices.saveLogin(body);
-        return apiResponse(res, result);
+        return mobileAppResponse(res, result);
     } catch (error) {
-        return apiResponse(res, error);
+        return mobileAppResponse(res, error);
     }
 });
 
@@ -22,9 +24,9 @@ userRouter.post('/sendOtp', authVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await userServices.sendOtp(body);
-        return apiResponse(res, result);
+        return mobileAppResponse(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.SEND_OTP));
     } catch (error) {
-        return apiResponse(res, error);
+        return mobileAppResponse(res, error);
     }
 });
 
@@ -32,9 +34,9 @@ userRouter.post('/verifyOtp', authTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await userServices.verifyOtp(body);
-        return apiResponse(res, result);
+        return mobileAppResponse(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.VERIFY_OTP));
     } catch (error) {
-        return apiResponse(res, error);
+        return mobileAppResponse(res, error);
     }
 });
 
@@ -42,10 +44,9 @@ userRouter.post('/locations', authTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await userServices.locations(body);
-        return apiResponse(res, result);
-        // return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
+        return mobileAppResponse(res, result, body, getRoleAndUserId(req, 'GET Login User Location'));
     } catch (error) {
-        return apiResponse(res, error);
+        return mobileAppResponse(res, error);
     }
 });
 

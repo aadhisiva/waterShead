@@ -3,7 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
 
 @Entity()
@@ -11,10 +11,10 @@ export class Schemes {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: ""})
+  @Column({ default: "" })
   SchemeName: string;
 
-  @Column({ default: ""})
+  @Column({ default: "" })
   SchemeCode: string;
 
   @CreateDateColumn()

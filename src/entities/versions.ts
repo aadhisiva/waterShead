@@ -8,7 +8,7 @@ import {
   
   
   @Entity()
-  export class versions {
+  export class Versions {
   
     @PrimaryGeneratedColumn()
     id: number;

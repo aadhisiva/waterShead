@@ -1,5 +1,5 @@
 import { AppDataSource } from "../db/config";
-import { webLogs } from "../entities";
+import { MobileLogs, OtpLogs, webLogs } from "../entities";
 
 // generate random string
 export const generateRandomString = (RequiredLength) => {
@@ -43,16 +43,49 @@ export function generateUniqueId() {
   return year + month + day + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + new Date().getMilliseconds();
 };
 
-export const saveWebLogs = async (WebPage, Message, UserId, Request, Response, Role , ResponseType) =>  {
+export const saveWebLogs = async (WebPage, Message, UserId, Request, Response, Role, ResponseType) => {
   // generate time
-let newBody = {
-  WebPage,
-  Message,
-  UserId,
-  Role,
-  Request: JSON.stringify(Request),
-  Response: JSON.stringify(Response),
-  ResponseType
-}
+  let newBody = {
+    WebPage,
+    Message,
+    UserId,
+    Role,
+    Request: JSON.stringify(Request),
+    Response: JSON.stringify(Response),
+    ResponseType
+  }
   return await AppDataSource.getRepository(webLogs).save(newBody);
+};
+export const saveMobileLogs = async (logMessage, apiMessage, UserId, Request, Response, Role, ResponseType) => {
+  // generate time
+  let newBody = {
+    logMessage,
+    apiMessage,
+    UserId,
+    Role,
+    Request: JSON.stringify(Request),
+    Response: JSON.stringify(Response),
+    ResponseType
+  }
+  return await AppDataSource.getRepository(MobileLogs).save(newBody);
+};
+export const getRoleAndUserId = (req, message) => {
+  // create new Object
+  let newBody = {
+    userId: req.headers["userid"],
+    role: req.headers["role"],
+    logMessage: message
+  }
+  return newBody;;
+};
+export const saveMobileOtps = async (Mobile, text, response, UserId='', otp) => {
+  // create new Object
+  let newBody = {
+    otp,
+    Mobile,
+    Message: text,
+    Response: JSON.stringify(response),
+    UserId
+  }
+  return await AppDataSource.getRepository(OtpLogs).save(newBody);
 };

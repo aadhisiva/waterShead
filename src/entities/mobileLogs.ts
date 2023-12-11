@@ -7,16 +7,22 @@ import {
   
   
   @Entity()
-  export class mobileLogs {
+  export class MobileLogs {
   
     @PrimaryGeneratedColumn()
     id: number;
   
     @Column({ default: '' })
     UserId: string;
+  
+    @Column({ default: '' })
+    Role: string;
 
     @Column({ default: '' })
-    Message: string;
+    logMessage: string;
+
+    @Column({ default: '' })
+    apiMessage: string;
 
     @Column({ default: '' })
     Request: string;

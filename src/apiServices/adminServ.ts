@@ -90,6 +90,18 @@ export class AdminServices {
         return await this.adminRepo.microWaterShedInSubWaterShed(data);
     };
 
+    async schemeSelect(data) {
+        return await this.adminRepo.schemeSelect(data);
+    };
+
+    async sectorInSchemes(data) {
+        return await this.adminRepo.sectorInSchemes(data);
+    };
+
+    async activityInSector(data) {
+        return await this.adminRepo.activityInSector(data);
+    };
+
     async locations(data) {
         return await this.adminRepo.locations(data);
     };

@@ -127,6 +127,33 @@ adminRouter.post('/microWaterShedInSubWaterShed', webAuthTokenAndVersion, async 
         return webAppResponse(res, error);
     }
 });
+adminRouter.post('/schemeSelect', webAuthTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await adminServices.schemeSelect(body);
+        return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
+    } catch (error) {
+        return webAppResponse(res, error);
+    }
+});
+adminRouter.post('/sectorInSchemes', webAuthTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await adminServices.sectorInSchemes(body);
+        return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
+    } catch (error) {
+        return webAppResponse(res, error);
+    }
+});
+adminRouter.post('/activityInSector', webAuthTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await adminServices.activityInSector(body);
+        return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
+    } catch (error) {
+        return webAppResponse(res, error);
+    }
+});
 
 adminRouter.post('/locations', webAuthTokenAndVersion, async (req, res) => {
     try {

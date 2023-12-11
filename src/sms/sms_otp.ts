@@ -68,9 +68,9 @@ export class SMSServices {
                 key: hashGenerator(userName, senderId, message, secureKey),
                 templateid: templateId.trim()
             };
-            let resposne = await post_url(process.env.SMS_API, data); // calling post_to_url_unicode to send single sms
-            let result = ((resposne.data?.includes("402" ) !== true) || (resposne.status !== 200) || (resposne?.statusText !== "OK"))? 422 : 200;
-            return result;
+            let response = await post_url(process.env.SMS_API, data); // calling post_to_url_unicode to send single sms
+            let result = ((response.data?.includes("402" ) !== true) || (response.status !== 200) || (response?.statusText !== "OK"))? 422 : 200;
+            return { code: result, response: response?.data };
         } catch (e) {
             Logger.error("error",e);
             return e.message;

@@ -18,7 +18,7 @@ export class OtpServices {
             process.env.SMS_API_SERVICE_KEY,
             process.env.TEMPLATE_ID
         );
-        return sendSingleSms;
+        return {...sendSingleSms, ...{otpMessage: text}};
     };
 
     async sendSmsInKannadaUnicode(mobile_no, otp) {
