@@ -1,6 +1,6 @@
 import { Container, Service } from 'typedi';
 import express from "express";
-import { mobileAppResponse } from '../utils/errorHandling';
+import { mobileAppResponse, mobileAppResponseForLarge } from '../utils/errorHandling';
 import { UserServices } from '../apiServices/userServ';
 import { authTokenAndVersion, authVersion } from '../utils/middlewares';
 import { MOBILE_MESSAGES } from '../utils/constants';
@@ -44,7 +44,18 @@ userRouter.post('/locations', authTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await userServices.locations(body);
-        return mobileAppResponse(res, result, body, getRoleAndUserId(req, 'GET Login User Location'));
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, 'GET Login User Location'));
+    } catch (error) {
+        return mobileAppResponse(res, error);
+    }
+});
+
+userRouter.post('/saveActualData', authTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        body.UserRole = req.headers["role"]
+        let result = await userServices.saveActualData(body);
+        return mobileAppResponse(res, result, body, getRoleAndUserId(req, 'Saved Survey Data.'));
     } catch (error) {
         return mobileAppResponse(res, error);
     }

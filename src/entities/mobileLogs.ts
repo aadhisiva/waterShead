@@ -24,10 +24,10 @@ import {
     @Column({ default: '' })
     apiMessage: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type:'text' })
     Request: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',type:'text' })
     Response: string;
 
     @CreateDateColumn()

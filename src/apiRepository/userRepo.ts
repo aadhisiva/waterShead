@@ -1,10 +1,11 @@
 import { Service } from 'typedi';
 import { AppDataSource } from '../db/config';
-import { loginData, masterData, Versions } from '../entities';
+import { loginData, masterData, Versions, WaterShedData } from '../entities';
 
 
 const loginDataRepo = AppDataSource.getRepository(loginData);
 const mastersRepo = AppDataSource.getRepository(masterData);
+const waterShedRepo = AppDataSource.getRepository(WaterShedData);
 @Service()
 export class UserRepo {
 
@@ -33,6 +34,12 @@ export class UserRepo {
         return findData;
     };
 
+    async fetchUserById(UserId) {
+        let findData = await AppDataSource.getRepository(loginData).findOneBy({ UserId });
+        if (!findData) return { code: 404 };
+        return findData;
+    };
+
 
     async locations(data) {
         const { UserId, Mobile, UserRole } = data;
@@ -43,13 +50,14 @@ export class UserRepo {
             for (let i = 0; i < totalLength; i++) {
                 let newObject = {};
                 let eachIndex = findAll[i];
+                if(!eachIndex.DistrictName) break;
                 newObject['District'] = eachIndex.DistrictName;
                 newObject['Taluk'] = eachIndex.TalukName;
+                if(!eachIndex.HobliName) break;
                 newObject['Hobli'] = eachIndex.HobliName;
                 newObject['villages'] = await mastersRepo.createQueryBuilder('master').select(['DISTINCT master.KGISVillageName as village'])
-                    .where("master.HobliName = :dCode", { dCode: eachIndex.HobliName })
-                    .orderBy('master.KGISVillageName', 'ASC')
-                    .getRawMany();
+                .where("master.HobliName = :dCode", { dCode: eachIndex.HobliName })
+                .getRawMany();
                 newObject['subWaterShead'] = await mastersRepo.createQueryBuilder('master').select(['DISTINCT master.SubWatershedName as subWaterShead'])
                     .where("master.HobliName = :dCode", { dCode: eachIndex.HobliName })
                     .orderBy('master.SubWatershedName', 'ASC').getRawMany();
@@ -75,5 +83,10 @@ export class UserRepo {
             return newArray;
         }
     };
+
+    async saveActualData(data){
+        let savingData = await waterShedRepo.save(data);
+        return savingData;
+    }
 
 };

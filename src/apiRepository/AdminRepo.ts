@@ -59,7 +59,7 @@ export class AdminRepo {
             let findData = await superAdminRepo.findOneBy({ Mobile, UserRole });
             if (!findData) return { code: 404 };
             let newData = { ...findData, ...data };
-            return await superAdminRepo.save(newData);
+            return await superAdminRepo.save(newData);  
         } else {
             let loginDb = await loginDataRepo;
             let findData = await loginDb.findOneBy({ Mobile, UserRole });
@@ -135,6 +135,7 @@ export class AdminRepo {
 
     async sectorInSchemes(data) {
         if (!data?.code) return { code: 400 };
+        console.log("data", data)
         let findData = await sectorsRepo.createQueryBuilder('master').select(['DISTINCT master.ActivityCode as value', 'master.SectorName as name'])
             .where("master.SchemeCode = :dCode", { dCode: data?.code })
             .orderBy('master.SectorName', 'ASC').getRawMany();
@@ -143,10 +144,10 @@ export class AdminRepo {
 
     async activityInSector(data) {
         if (!data?.code) return { code: 400 };
+        console.log("data?.code",data)
         let findData = await activityRepo.createQueryBuilder('master').select(['DISTINCT master.ActivityCode as value', 'master.ActivityName as name'])
-            .where("master.ActivityCode = :dCode", { dCode: data?.code })
-            .orderBy('master.MicroWatershedCode', 'ASC').getRawMany();
-        return findData;
+            .where("master.ActivityCode = :dCode", { dCode: data?.code }).getRawMany();
+        return findData ?? [];
     };
 
     async locations(data) {

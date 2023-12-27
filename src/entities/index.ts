@@ -12,3 +12,4 @@ export * from "./superAdmin";
 export * from "./mobileLogs";
 export * from "./versions"
 export * from "./otpLogs";
+export * from "./waterShedData";

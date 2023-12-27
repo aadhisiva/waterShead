@@ -13,6 +13,7 @@ export class UserServices {
         public userRepo: UserRepo,
         public otpServices: OtpServices
     ) { };
+
     async saveLogin(data) {
         const { Mobile, UserRole } = data;
         if (!Mobile || !UserRole) return { code: 400 };
@@ -50,5 +51,14 @@ export class UserServices {
 
     async locations(data) {
         return await this.userRepo.locations(data);
+    };
+
+    async saveActualData(data) {
+        const { UserId } = data;
+        if(!UserId) return { code : 400 };
+        let getUserData: any = await this.userRepo.fetchUserById(UserId);
+        data.UserRole = getUserData?.UserRole;
+        data.CreatedBy = getUserData?.UserRole +' '+ getUserData?.Name;
+        return await this.userRepo.saveActualData(data);
     };
 }

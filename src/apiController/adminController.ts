@@ -1,6 +1,6 @@
 import { Container, Service } from 'typedi';
 import express from "express";
-import { webAppResponse } from '../utils/errorHandling';
+import { webAppResponse, webAppResponseForLarge } from '../utils/errorHandling';
 import { AdminServices } from '../apiServices/adminServ';
 import { webAuthTokenAndVersion } from '../utils/middlewares';
 import { WEBMESSAGES, WEBPAGES } from '../utils/constants';
@@ -12,6 +12,7 @@ const adminServices = Container.get(AdminServices);
 adminRouter.post('/sendOtp', async (req, res) => {
     try {
         let body = req.body;
+        body.userUniqueId = req.headers["userid"]
         let result = await adminServices.sendOtp(body);
         return webAppResponse(res, result, body, WEBPAGES.LOGIN_PAGE, WEBMESSAGES.SEND_OTP, req.headers["userid"], req.headers["role"]);
     } catch (error) {
@@ -139,6 +140,7 @@ adminRouter.post('/schemeSelect', webAuthTokenAndVersion, async (req, res) => {
 adminRouter.post('/sectorInSchemes', webAuthTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
+        body.UserRole = req.headers["role"]
         let result = await adminServices.sectorInSchemes(body);
         return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
     } catch (error) {
@@ -159,7 +161,7 @@ adminRouter.post('/locations', webAuthTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await adminServices.locations(body);
-        return webAppResponse(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
+        return webAppResponseForLarge(res, result, body,  WEBPAGES.USER_MANAGEMENT, WEBMESSAGES.GET_ALLDATA, req.headers["userid"], req.headers["role"]);
     } catch (error) {
         return webAppResponse(res, error);
     }

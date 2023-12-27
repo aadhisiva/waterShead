@@ -45,12 +45,12 @@ export class Sectors {
   @Column({ default: ""})
   UserId: string;
 
+  @Column({ default: ""})
+  UserRole: string;
+
   @CreateDateColumn()
   createdDate: Date;
 
   @UpdateDateColumn()
   updatedDate: Date;
-
-  // @ManyToOne(() => Schemes, (scheme) => scheme.sectors)
-  // scheme: Schemes
 }

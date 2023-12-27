@@ -8,9 +8,8 @@ import { Equal } from 'typeorm';
 export class SectorRepo {
 
     async getSchemes(data) {
-        const { UserId } = data;
-        if (!UserId) return { code: 400 };
-        // let schemesJson = await AppDataSource.getRepository(Schemes).find();
+        const { UserId, UserRole } = data;
+        if (!UserRole) return { code: 400 };
         let schemesJson = await AppDataSource.getRepository(Schemes).createQueryBuilder('scheme').
             select(['scheme.SchemeName as SchemeName, scheme.SchemeCode as SchemeCode']).getRawMany()
         let promiseRes = await new Promise(async (resolve, reject) => {
@@ -25,8 +24,9 @@ export class SectorRepo {
                         select([`sector.SectorName as SectorName,sector.IsSubScheme as IsSubScheme, sector.IsCategory as IsCategory,
                     sector.IsActivity as IsActivity,sector.IsSubActivity as IsSubActivity,sector.ActivityCode as ActivityCode,
                     sector.SubSchemeCode as SubSchemeCode,sector.SubActivityCode as SubActivityCode,sector.CategoryCode as CategoryCode`])
-                        .where("sector.SchemeCode =:code and sector.UserId = :userId", { code: eachScheme.SchemeCode, userId: UserId }).getRawMany()
+                        .where("sector.SchemeCode =:code and sector.UserRole = :UserRole", { code: eachScheme.SchemeCode, UserRole: UserRole }).getRawMany()
                 }
+                if(newObj?.SectorsJson?.length == 0) break;  
                 newArray.push(newObj);
             };
             resolve(newArray);

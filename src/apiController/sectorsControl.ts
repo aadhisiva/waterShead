@@ -1,29 +1,30 @@
 import { Container, Service } from 'typedi';
 import express from "express";
 import { SectorServices } from '../apiServices/sectorsServ';
-import { mobileAppResponse } from '../utils/errorHandling';
+import { mobileAppResponse, mobileAppResponseForLarge } from '../utils/errorHandling';
 import { getRoleAndUserId } from '../utils/resuableCode';
 import { MOBILE_MESSAGES } from '../utils/constants';
+import { authTokenAndVersion } from '../utils/middlewares';
 
 const sectorRouter = express.Router()
 
 const sectorServices = Container.get(SectorServices);
 
-sectorRouter.post('/getSchemes', async (req, res) => {
+sectorRouter.post('/getSchemes', authTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await sectorServices.getSchemes(body);
-        return mobileAppResponse(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_SCHEMES));
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_SCHEMES));
     } catch (error) {
         return mobileAppResponse(res, error);
     }
 });
 
-sectorRouter.post('/codeWiseJsonFormate', async (req, res) => {
+sectorRouter.post('/codeWiseJsonFormate',authTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await sectorServices.codeWiseJsonFormate(body);
-        return mobileAppResponse(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_ALLDATA));
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_ALLDATA));
     } catch (error) {
         return mobileAppResponse(res, error);
     }
@@ -43,7 +44,7 @@ sectorRouter.post('/sectors', async (req, res) => {
     try {
         let body = req.body;
         let result = await sectorServices.saveSectors(body);
-        return mobileAppResponse(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.SAVE_SECTOR));
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.SAVE_SECTOR));
     } catch (error) {
         return mobileAppResponse(res, error);
     }
@@ -86,11 +87,11 @@ sectorRouter.post('/questions', async (req, res) => {
     }
 });
 
-sectorRouter.post('/getQuestions', async (req, res) => {
+sectorRouter.post('/getQuestions', authTokenAndVersion, async (req, res) => {
     try {
         let body = req.body;
         let result = await sectorServices.getQuestions(body);
-        return mobileAppResponse(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_QUESTIONS));
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_QUESTIONS));
     } catch (error) {
         return mobileAppResponse(res, error);
     }
