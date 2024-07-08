@@ -12,16 +12,16 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', nullable:true })
     UserId: string;
   
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', nullable:true })
     Role: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', nullable:true })
     logMessage: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', nullable:true })
     apiMessage: string;
 
     @Column({ default: '', type:'text' })

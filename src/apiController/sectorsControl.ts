@@ -30,6 +30,26 @@ sectorRouter.post('/codeWiseJsonFormate',authTokenAndVersion, async (req, res) =
     }
 });
 
+sectorRouter.post('/caterGoryOrActivity',authTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await sectorServices.caterGoryOrActivity(body);
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_ALLDATA));
+    } catch (error) {
+        return mobileAppResponse(res, error);
+    }
+});
+
+sectorRouter.post('/subActivityJson',authTokenAndVersion, async (req, res) => {
+    try {
+        let body = req.body;
+        let result = await sectorServices.subActivityJson(body);
+        return mobileAppResponseForLarge(res, result, body, getRoleAndUserId(req, MOBILE_MESSAGES.GET_ALLDATA));
+    } catch (error) {
+        return mobileAppResponse(res, error);
+    }
+});
+
 sectorRouter.post('/schemes', async (req, res) => {
     try {
         let body = req.body;

@@ -14,6 +14,12 @@ export class SectorServices {
     async codeWiseJsonFormate(data){
         return this.sectorRepo.codeWiseJsonFormate(data);
     }
+    async caterGoryOrActivity(data){
+        return this.sectorRepo.caterGoryOrActivity(data);
+    }
+    async subActivityJson(data){
+        return this.sectorRepo.subActivityJson(data);
+    }
     async saveSectors(data){
         return this.sectorRepo.saveSectors(data);
     }

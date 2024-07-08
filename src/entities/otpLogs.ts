@@ -10,19 +10,19 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column()
+    @Column({type: 'nvarchar', nullable:true, default: ''})
     otp: string;
   
-    @Column()
+    @Column({type: 'nvarchar', nullable:true, default: ''})
     Mobile: string;
   
-    @Column()
+    @Column({type: 'nvarchar', nullable:true, default: ''})
     Message: string;
   
-    @Column()
+    @Column({type: 'nvarchar', nullable:true, default: ''})
     Response: string;
   
-    @Column()
+    @Column({type: 'nvarchar', nullable:true, default: ''})
     UserId: string;
   
     @CreateDateColumn()

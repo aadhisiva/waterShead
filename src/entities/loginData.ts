@@ -12,61 +12,61 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     UserId: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     UserRole: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     Name: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     UserCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     Mobile: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     Otp: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     WebOtp: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     Token: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     WebToken: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     TokenExpirationTime: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     WebTokenExpirationTime: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     DistrictCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     TalukCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     HobliCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     DistrictName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     TalukName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     HobliName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     Status: string;
 
-    @Column({ default: '' })
+    @Column({ default: '', type: 'nvarchar', length: 100 })
     Allotted: string;
 
     @Column({ default: '', type: 'text' })

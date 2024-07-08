@@ -17,7 +17,6 @@ import Logger from './loggers/winstonLogger';
 //controllers
 import { adminRouter, sectorRouter } from "./apiController";
 import { userRouter } from './apiController/userControl';
-import path from "path";
 
 // for accessing env variables
 dotenv.config();
@@ -52,36 +51,28 @@ app.use(morgan('common', {
   stream: fs.createWriteStream('./logs/application.log', { flags: 'a' })
 }));
 
-// Set directory to contain the templates ('views')
-// app.set('views', __dirname);
-
-// Set view engine to use
-// app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 // we are adding port connection here
-// app.listen(port, '192.168.59.170', async () => {
+app.get("/watershed/run", (req, res) => {
+  res.send("running")
+})
+
+// controllers
+app.use('/watershed/sector', sectorRouter);
+app.use('/watershed/login', userRouter);
+app.use('/watershed/admin', adminRouter);
+
+
 AppDataSource.initialize().then(async (connection) => {
+  // app.listen(port, '192.168.45.170');
+  app.listen(port, () => {
+    Logger.info(`⚡️[Database]: Database connected....+++++++ ${port}`);
+  });
   Logger.info(`⚡️[Database]: Database connected....+++++++ ${port}`);
 }).catch(error => {
   Logger.error("connection error :::::::", error);
   throw new Error("new Connection ERROR " + JSON.stringify(error));
 })
 
-app.use(express.static(path.resolve(__dirname, "../build"))); //assign web application build file here 
-app.get("/*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../build", "index.html"));
-}); // it will keep path sync in every page
-
-app.get("/run", (req, res) => {
-  res.send("running")
-})
-
-// controllers
-app.use('/sector', sectorRouter);
-app.use('/login', userRouter);
-app.use('/admin', adminRouter);
-
-// app.listen(port, '192.168.45.170');
-app.listen(port);
 
 
