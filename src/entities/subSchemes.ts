@@ -15,31 +15,31 @@ export class SubSchemes {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   SubSchemeName: string;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   CategoryCode: string;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   SectorCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   IsCategory: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   IsActivity: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   IsSubActivity: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   ActivityCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   SubSchemeCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: "nvarchar", length: 500 })
   SubActivityCode: string;
 
   @CreateDateColumn()

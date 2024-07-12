@@ -13,25 +13,25 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   CategoryName: string;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   SectorCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   IsActivity: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   IsSubActivity: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   ActivityCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   CategoryCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   SubActivityCode: string;
 
   @CreateDateColumn()

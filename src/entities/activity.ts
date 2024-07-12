@@ -12,34 +12,34 @@ export class Activity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   ActivityName: string;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   CategoryCode: string;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   SectorCode: string;
 
-  @Column({ default: '' })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   SubSchemeCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   IsSubActivity: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   ActivityCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   SubActivityCode: string;
 
-  @Column({ default: "" })
+  @Column({ nullable:true,  type: 'nvarchar', length: 500 })
   FormateType: string;
 
-  @Column({ default: "", type: 'text' })
+  @Column({ nullable:true, type: 'text' })
   TypeOfPerson: string;
 
-  @Column({ default: "", type: 'text' })
+  @Column({ nullable:true, type: 'text' })
   TypeOfWork: string;
 
   @CreateDateColumn()

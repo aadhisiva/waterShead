@@ -64,7 +64,6 @@ app.use('/watershed/admin', adminRouter);
 
 
 AppDataSource.initialize().then(async (connection) => {
-  // app.listen(port, '192.168.45.170');
   app.listen(port, () => {
     Logger.info(`⚡️[Database]: Database connected....+++++++ ${port}`);
   });

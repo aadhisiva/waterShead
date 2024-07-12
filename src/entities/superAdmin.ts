@@ -12,28 +12,28 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     UserId: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     UserRole: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     Name: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     Mobile: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     WebOtp: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     WebToken: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: "nvarchar", length: 500 })
     WebTokenExpirationTime: string;
 
-    @Column({ default: '', type: 'text' })
+    @Column({ nullable:true, type: 'text' })
     WebVersion: string;
   
     @CreateDateColumn()

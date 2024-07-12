@@ -12,23 +12,26 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '', type: 'nvarchar', nullable:true })
+    @Column({ type: 'text', nullable:true })
     UserId: string;
   
-    @Column({ default: '', type: 'nvarchar', nullable:true })
+    @Column({ type: 'text', nullable:true })
     Role: string;
 
-    @Column({ default: '', type: 'nvarchar', nullable:true })
+    @Column({ type: 'text', nullable:true })
     logMessage: string;
 
-    @Column({ default: '', type: 'nvarchar', nullable:true })
+    @Column({type: 'text', nullable:true })
     apiMessage: string;
 
-    @Column({ default: '', type:'text' })
+    @Column({ type:'text', default: null })
     Request: string;
 
-    @Column({ default: '',type:'text' })
+    @Column({ type:'text', default: null })
     Response: string;
+
+    @Column({ type:'text', default: null })
+    ResponseType: string;
 
     @CreateDateColumn()
     createdDate: Date;

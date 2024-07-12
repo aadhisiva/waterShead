@@ -13,10 +13,10 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ default: '',  type: "nvarchar", length: 10 })
     Version: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: "nvarchar", length: 10 })
     WebVersion: string;
 
     @CreateDateColumn()

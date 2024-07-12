@@ -13,34 +13,34 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     QuestionId: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     QuestionType: string;
 
-    @Column({ default: '', type: 'text' })
+    @Column({ nullable:true, type: 'text' })
     QuestionValues: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     Question: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     formateType: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     IsApiRequired: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     SectorName: string;
     
-    @Column({ default: "" })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     TypeOfPerson: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     ActivityName: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true,  type: 'nvarchar', length: 500 })
     SubActivityName: string;
   
     @CreateDateColumn()

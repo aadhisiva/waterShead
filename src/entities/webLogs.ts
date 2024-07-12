@@ -12,22 +12,22 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ nullable:true, type: 'text' })
     UserId: string;
   
-    @Column({ default: '' })
+    @Column({ nullable:true, type: 'text' })
     Role: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true, type: 'text'})
     Message: string;
 
-    @Column({ default: '', type: 'text' })
+    @Column({ nullable:true, type: 'text' })
     Request: string;
 
-    @Column({ default: '', type: 'text' })
+    @Column({ nullable:true, type: 'text' })
     Response: string;
 
-    @Column({ default: '' })
+    @Column({ nullable:true, type: 'text'})
     ResponseType: string;
 
     @CreateDateColumn()

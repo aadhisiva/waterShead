@@ -12,37 +12,37 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ nullable:true })
     UserId: string;
   
-    @Column({ default: '', type: 'nvarchar', length: 'max' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     UserRole: string;
 
-    @Column({ default: '', type: 'nvarchar', length: 'max' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     Latitude: string;
 
-    @Column({ default: '', type: 'nvarchar', length: 'max' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     Longitude: string;
 
-    @Column({ default: '', type: 'nvarchar', length: 'max' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     CoOrdinatesType: string;
 
     @Column({ default: '', type: 'text' })
     FieldPhoto: string;
 
-    @Column({ default: '', type: 'nvarchar', length: 'max' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     CapturedPhotoType: string;
 
     @CreateDateColumn()
     CreatedDate: Date;
 
-    @Column({ default: '', type: 'nvarchar', length: 'max'  })
+    @Column({ nullable:true, type: 'nvarchar', length: 500  })
     CreatedBy: String;
 
-    @Column({ default: '', type: 'nvarchar', length: 'max' })
+    @Column({ nullable:true, type: 'nvarchar', length: 500 })
     UpdatedBy: String;
 
-    @Column({ default: '' })
+    @Column({ nullable:true })
     Status: String;
 
     @CreateDateColumn()

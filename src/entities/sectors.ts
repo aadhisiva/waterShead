@@ -12,40 +12,40 @@ export class Sectors {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   SectorName: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   SchemeCode: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   IsSubScheme: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   IsCategory: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   IsActivity: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   IsSubActivity: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   ActivityCode: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   SubSchemeCode: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   SubActivityCode: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   CategoryCode: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   UserId: string;
 
-  @Column({ default: ""})
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   UserRole: string;
 
   @CreateDateColumn()

@@ -12,46 +12,46 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500})
     MicroWatershedCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     MicroWatershedName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     SubWatershedCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     SubWatershedName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     KGISVillageCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     KGISVillageName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     DistrictCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     DistrictName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     TalukCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     TalukName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     HobliCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     HobliName: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     CENSUSVillageCode: string;
 
-    @Column({ default: '' })
+    @Column({ default: '',  type: 'nvarchar', length: 500 })
     CENSUSVillageName: string;
     
     @CreateDateColumn()

@@ -11,10 +11,10 @@ export class Schemes {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: "" })
+  @Column({ nullable:true, type: "nvarchar", length: 500 })
   SchemeName: string;
 
-  @Column({ default: "" })
+  @Column({nullable:true,type: "nvarchar", length: 500 })
   SchemeCode: string;
 
   @CreateDateColumn()
